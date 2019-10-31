@@ -18,9 +18,9 @@ services:
         - ./data/db/mysql-dump:/docker-entrypoint-initdb.d
 
 ######################
-  easyoffices:
+  src:
     build: .
-    container_name: eo
+    container_name: src
     volumes:
       - "./public/:/var/www/html/"
       - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
