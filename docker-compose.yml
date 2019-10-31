@@ -1,0 +1,30 @@
+version: '3'
+services:
+######################
+  mysql:
+    image: mysql:5.7
+    command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
+    container_name: mysql
+    restart: always
+    environment:
+        - MYSQL_DATABASE=prod_db
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_USER=bj_user
+        - MYSQL_PASSWORD=password
+    ports:
+        - "3306:3306"
+    volumes:
+        - ./data/db/mysql:/var/lib/mysql
+        - ./data/db/mysql-dump:/docker-entrypoint-initdb.d
+
+######################
+  easyoffices:
+    build: .
+    container_name: eo
+    volumes:
+      - "./public/:/var/www/html/"
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - "80:80"
+    links:
+      - mysql
